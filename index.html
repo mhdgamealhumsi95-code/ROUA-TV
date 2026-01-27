@@ -2,8 +2,12 @@
 <html>
 <head>
   <meta charset="utf-8">
-
+  
   <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+
   <title>تطبيق التلفاز الذكي - النسخة الاحترافية</title>
   <link href="https://vjs.zencdn.net/8.3.0/video-js.css" rel="stylesheet" />
 
@@ -20,22 +24,29 @@
       height: 100vh;
     }
     
-    /* --- تنسيق القائمة الجانبية المنزلقة --- */
+    /* --- تنسيق القائمة الجانبية (تم التعديل) --- */
     #channel-menu {
       position: absolute;
       top: 0;
       right: -320px; /* مخفية خارج الشاشة */
-      width: 280px;
+      width: 300px; /* عرض مناسب */
       height: 100vh; /* طول الشاشة كامل */
-      background: rgba(0, 0, 0, 0.9); /* خلفية غامقة */
+      background: rgba(0, 0, 0, 0.95); /* خلفية غامقة */
       padding: 20px;
       box-sizing: border-box;
       transition: right 0.4s ease; /* حركة ناعمة */
       z-index: 9999;
       display: flex;
       flex-direction: column;
-      justify-content: center; /* توسيط القنوات عمودياً */
+      justify-content: flex-start; /* ✅ تعديل: البدء من الأعلى لكي لا تختفي الأزرار */
+      overflow-y: auto; /* ✅ تعديل: السماح بالتمرير (Scroll) */
       box-shadow: -5px 0 15px rgba(0,0,0,0.8);
+    }
+
+    /* إخفاء شريط التمرير للحفاظ على الجمالية */
+    #channel-menu::-webkit-scrollbar {
+      width: 0px;
+      background: transparent;
     }
 
     /* كلاس لإظهار القائمة */
@@ -51,6 +62,7 @@
       text-align: right;
       border-bottom: 2px solid #333;
       padding-bottom: 10px;
+      margin-top: 10px;
     }
     
     /* الأزرار */
@@ -59,7 +71,7 @@
       width: 100%;
       margin-bottom: 12px;
       padding: 15px;
-      font-size: 18px; /* حجم خط مناسب */
+      font-size: 18px; 
       cursor: pointer;
       background: #222;
       color: #bbb;
@@ -68,6 +80,7 @@
       text-align: right;
       outline: none;
       transition: all 0.2s;
+      flex-shrink: 0; /* يمنع الأزرار من الانكماش */
     }
     
     /* الزر المختار */
@@ -76,7 +89,7 @@
       color: #000;
       border-color: #fff;
       font-weight: bold;
-      transform: scale(1.05);
+      transform: scale(1.02);
       box-shadow: 0 0 10px rgba(240, 196, 25, 0.5);
     }
 
@@ -109,8 +122,8 @@
     <div class="menu-title">📺 قائمة القنوات</div>
 
     <button onclick="window.location.reload(true)" style="background: #d32f2f; color: white;">
-  🔄 تحديث القائمة
-</button>
+      🔄 تحديث القائمة
+    </button>
 
     <button onclick="playChannel('https://live.kwikmotion.com/syriatvlive/syriatv.smil/playlist_dvr.m3u8')">
       🇸🇾 القناة السورية
@@ -119,7 +132,6 @@
     <button onclick="playChannel('https://live.kwikmotion.com/syriatv02live/syriatv02.smil/syriatv02publish/syriatv02_source/chunks.m3u8')">
       🎭 سوريا دراما (محدث)
     </button>
-    
     
     <button onclick="playChannel('https://p-ltv.akamaized.net/ltv/ltv_1.m3u8')">
       🟣 قناة لنا
@@ -130,28 +142,28 @@
     </button>
 
     <button onclick="playChannel('https://shd-gcp-live.edgenextcdn.net/live/bitmovin-mbc-plus-drama/e37251ec2aac8f6c98f75cd0fa37cd28/manifest/video/576p1200kbps/video.m3u8')">
-  MBC drama+
-</button>
+      MBC drama+
+    </button>
 
-<button onclick="playChannel('https://mbc1-enc.edgenextcdn.net/out/v1/0965e4d7deae49179172426cbfb3bc5e/index_7.m3u8')">
-MBC 1
-</button>
+    <button onclick="playChannel('https://mbc1-enc.edgenextcdn.net/out/v1/0965e4d7deae49179172426cbfb3bc5e/index_7.m3u8')">
+      MBC 1
+    </button>
 
-<button onclick="playChannel('https://live.eighty-eight.tv:7443/mbc2-1/tracks-v1a1/mono.ts.m3u8?token=4c9a4f42127ceaf36876dcc6ae2ed62ee927d4e5-c12cd583eb94649d5dd578314a2e0ad0-1769479858-1769469058')">
-  🎬 MBC 2
-</button>
+    <button onclick="playChannel('https://live.eighty-eight.tv:7443/mbc2-1/tracks-v1a1/mono.ts.m3u8?token=4c9a4f42127ceaf36876dcc6ae2ed62ee927d4e5-c12cd583eb94649d5dd578314a2e0ad0-1769479858-1769469058')">
+      🎬 MBC 2
+    </button>
 
-<button onclick="playChannel('https://ml-pull-hwc.myco.io/MixTV/hls/MixTV_H264-360p.m3u8?pkg_media=video&pkg_hm=index.m3u8&pkg_svc=1&pkg_vcodec=avc1')">
-  MIX MOVIE
-</button>
+    <button onclick="playChannel('https://ml-pull-hwc.myco.io/MixTV/hls/MixTV_H264-360p.m3u8?pkg_media=video&pkg_hm=index.m3u8&pkg_svc=1&pkg_vcodec=avc1')">
+      MIX MOVIE
+    </button>
 
-<button onclick="playChannel('https://shd-gcp-live.edgenextcdn.net/live/bitmovin-mbc-4/24f134f1cd63db9346439e96b86ca6ed/manifest/video/720p1750kbps/video.m3u8')">
-  MBC 4
-</button>
+    <button onclick="playChannel('https://shd-gcp-live.edgenextcdn.net/live/bitmovin-mbc-4/24f134f1cd63db9346439e96b86ca6ed/manifest/video/720p1750kbps/video.m3u8')">
+      MBC 4
+    </button>
 
-<button onclick="playChannel('https://shd-gcp-live.edgenextcdn.net/live/bitmovin-mbc-1-usa/fdac3a4fc0473f1f56e07ec1d63a4b7b/manifest/video/720p1750kbps/video.m3u8')">
-  MBC hd 
-</button>
+    <button onclick="playChannel('https://shd-gcp-live.edgenextcdn.net/live/bitmovin-mbc-1-usa/fdac3a4fc0473f1f56e07ec1d63a4b7b/manifest/video/720p1750kbps/video.m3u8')">
+      MBC hd 
+    </button>
 
   </div>
 
@@ -163,31 +175,34 @@ MBC 1
     var hint = document.getElementById('menu-hint');
     var menuButtons = document.querySelectorAll('#channel-menu button');
     
-    // حالات التطبيق: video (مشاهدة) أو menu (القائمة مفتوحة)
+    // حالات التطبيق
     var appState = 'video'; 
     var menuIndex = 0;
 
-    // إخفاء القائمة عند البداية
+    // --- ✅ 1. كود منع الخروج المفاجئ (Error Handler) ---
+    player.on('error', function() {
+      console.log("تم منع حدوث كراش بسبب خطأ في القناة");
+      player.error(null); // مسح الخطأ لإبقاء التطبيق يعمل
+    });
+
     function showHint() {
       hint.style.opacity = 1;
-      setTimeout(() => { hint.style.opacity = 0; }, 5000); // تختفي بعد 5 ثواني
+      setTimeout(() => { hint.style.opacity = 0; }, 5000); 
     }
 
     player.ready(function() {
-      showHint(); // إظهار تلميح عند التشغيل
+      showHint();
     });
 
     function toggleMenu() {
       if (appState === 'video') {
-        // فتح القائمة
         appState = 'menu';
         menu.classList.add('visible');
         updateSelection();
       } else {
-        // إغلاق القائمة
         appState = 'video';
         menu.classList.remove('visible');
-        player.focus(); // إعادة التركيز للفيديو
+        player.focus(); 
       }
     }
 
@@ -195,24 +210,26 @@ MBC 1
       // إزالة التحديد عن الكل
       menuButtons.forEach(btn => btn.classList.remove('selected'));
       
-      // تحديد الزر الحالي فقط إذا كانت القائمة مفتوحة
+      // تحديد الزر الحالي
       if (appState === 'menu') {
-        menuButtons[menuIndex].classList.add('selected');
-        menuButtons[menuIndex].focus();
+        var btn = menuButtons[menuIndex];
+        btn.classList.add('selected');
+        btn.focus();
+
+        // --- ✅ 2. كود اللحاق بالزر (Auto Scroll) ---
+        // هذا السطر يخلي القائمة تتحرك لتظهر الزر المخفي
+        btn.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
     }
 
-    // الاستماع لأزرار الريموت والكيبورد
     document.addEventListener('keydown', function(event) {
       
-      // قائمة الأزرار التي نريد التحكم بها
       const keys = [13, 37, 38, 39, 40, 8, 27, 461, 10009];
       if (keys.includes(event.keyCode)) {
-         // نمنع التصرف الافتراضي فقط إذا كنا في القائمة، أو إذا ضغطنا OK لفتحها
-         // (للسماح برفع وخفض الصوت أثناء المشاهدة دون مشاكل)
+         // Prevent default
       }
 
-      // زر الرجوع (Back) لإغلاق القائمة
+      // زر الرجوع
       if ([8, 27, 461, 10009].includes(event.keyCode)) {
         if (appState === 'menu') {
           event.preventDefault();
@@ -221,32 +238,25 @@ MBC 1
         }
       }
 
-      // --- حالة المشاهدة (القائمة مغلقة) ---
       if (appState === 'video') {
-        // زر OK (13) لفتح القائمة
         if (event.keyCode === 13) {
             event.preventDefault();
             toggleMenu();
         }
       } 
-      
-      // --- حالة القائمة المفتوحة ---
       else if (appState === 'menu') {
-        event.preventDefault(); // منع التحكم بالفيديو أثناء فتح القائمة
+        event.preventDefault(); 
 
-        if (event.keyCode === 40) { // سهم تحت
+        if (event.keyCode === 40) { // تحت
           if (menuIndex < menuButtons.length - 1) menuIndex++;
         } 
-        else if (event.keyCode === 38) { // سهم فوق
+        else if (event.keyCode === 38) { // فوق
           if (menuIndex > 0) menuIndex--;
         }
-        else if (event.keyCode === 13) { // Enter (تشغيل القناة)
+        else if (event.keyCode === 13) { // تشغيل
           menuButtons[menuIndex].click();
-          // ملاحظة: القائمة تبقى مفتوحة لتختار قناة أخرى إذا أردت
-          // إذا أردتها تغلق بعد الاختيار، ألغِ تعليق السطر التالي:
-          // toggleMenu(); 
         }
-        else if (event.keyCode === 37) { // سهم يسار (إغلاق القائمة)
+        else if (event.keyCode === 37) { // يسار
            toggleMenu();
         }
 
@@ -255,12 +265,11 @@ MBC 1
     });
 
     function playChannel(link) {
+      // --- ✅ 3. كود تفريغ الذاكرة (منع الكراش) ---
+      player.pause(); // إيقاف القديم فوراً
       player.src({ src: link, type: 'application/x-mpegURL' });
       player.play();
     }
   </script>
 </body>
 </html>
-
-
-
